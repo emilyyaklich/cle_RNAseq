@@ -9,6 +9,8 @@ setwd('/home/ely67071/cle_RNAseq/analysis')
 
 library(tidyverse)
 library(stringr)
+source("Functions.R")
+
 
 
 # read in adjusted count data 
@@ -18,7 +20,7 @@ adjusted_counts<-read.csv('adjusted_counts_combatseq.csv', row.names=1)
 ## For any list of gene IDs, extract the raw count data and plot it ##
 
 # Define the list of gene IDs
-gene_ids <- c("g51546.t1", "g66.t1", "g53294.t1", "g44552.t1")
+gene_ids <- c("g51546.t1", "g66.t1", "g53294.t1", "g44552.t1", "g19104.t1")
 
 # Initialize an empty list to store the results for each gene
 all_results <- list()
@@ -46,14 +48,24 @@ for (gene_id in gene_ids) {
   all_results[[gene_id]] <- result
   
   # Write the result to a CSV file
-  write.csv(result, file = paste0(gene_id, '.csv'), row.names = FALSE)
+  write.csv(result, file = paste0("raw_expression/",gene_id, '.csv'), row.names = FALSE)
   
-  # Plot the results and save as PNG
-  png(paste0("plots/", gene_id, "_exp.png"), res = 215, width = 2000, height = 1500)
-  ggplot(result, aes(x = as.factor(dataset_id), y = mean_value)) +
+  
+  # Plot the results
+  plot <- ggplot(result, aes(x = as.factor(dataset_id), y = mean_value)) +
     geom_bar(stat = "identity", fill = "skyblue") +
     labs(title = gene_id, x = "dataset_id", y = "Expression Counts (Raw)")
-  dev.off()
+  
+  # Save the plot as PNG
+  ggsave(filename = paste0("plots/", gene_id, "_exp.png"), plot, width = 10, height = 7, units = "in")
+  
+  
+  # Plot the results and save as PNG
+ #png(paste0("plots/", gene_id, "_exp.png"), res = 215, width = 2000, height = 1500)
+  #ggplot(result, aes(x = as.factor(dataset_id), y = mean_value)) +
+   # geom_bar(stat = "identity", fill = "skyblue") +
+    #labs(title = gene_id, x = "dataset_id", y = "Expression Counts (Raw)")
+  #dev.off(dev.cur())
 }
 
 
@@ -66,7 +78,7 @@ DEData_pairwise_cs_5h<-ImportCSVs('deseq_results/x5h/',0.05)
 DEData_pairwise_cs_24h<-ImportCSVs('deseq_results/x24h/',0.05)
 
 # Define the list of gene IDs
-gene_ids <- c("g51546.t1")
+gene_ids <- c("g51546.t1","g19104.t1")
 
 # Loop over each gene ID
 for (gene_id in gene_ids) {
@@ -109,12 +121,12 @@ for (gene_id in gene_ids) {
   # Set factor levels (for axis ordering)
   logFC_data$ID <- factor(logFC_data$ID, levels = c("AtCLV3p_5h", "AtCLV3p_24h", "AtCLV3p_S5L_5h", "AtCLV3p_S5L_24h", "AsterCLV3_5h", "AsterCLV3_24h", "AsterCLV3_L5S_5h", "AsterCLV3_L5S_24h"))
   
-  # Plot the results and save as PNG
-  png(paste0("plots/", gene_id, "_logfold.png"), res = 215, width = 2000, height = 1500)
-  ggplot(logFC_data, aes(x = as.factor(ID), y = log2FoldChange, fill = padj < 0.05)) +
-    geom_bar(stat = "identity") +
-    scale_fill_manual(values = c("grey", "blue"), labels = c("padj > 0.05", "padj < 0.05")) +
-    labs(title = gene_id, x = "dataset_id", y = "log2FoldChange")
-  dev.off()
+  # Plot the results
+  plot <- ggplot(result, aes(x = as.factor(dataset_id), y = mean_value)) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    labs(title = gene_id, x = "dataset_id", y = "Expression Counts (Raw)")
+  
+  # Save the plot as PNG
+  ggsave(filename = paste0("plots/", gene_id, "_exp.png"), plot, width = 10, height = 7, units = "in")
+  
 }
-

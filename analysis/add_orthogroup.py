@@ -53,7 +53,7 @@ def process_files(directory, output_filename):
     excel_writer.close()
 
 # Process files for 5h
-process_files("deseq_results/x5h/", "CLE_5h.xlsx")
+process_files("deseq_results/x5h/", "deseq/resultsCLE_5h.xlsx")
 
 # Process files for 24h
-process_files("deseq_results/x24h/", "CLE_24h.xlsx")
+process_files("deseq_results/x24h/", "deseq_results/CLE_24h.xlsx")
