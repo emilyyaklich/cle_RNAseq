@@ -67,14 +67,14 @@ for gene in dfs[files[2]].iloc[:, 0]:
         fold_change_AtCLV3p_5h, fold_change_AsterCLV3_L5S_5h = changes
         fold_change_AsterCLV3_5h = dfs[files[0]][dfs[files[0]].iloc[:, 0] == gene].iloc[0]["log2FoldChange"]
         fold_change_AtCLV3p_S5L_5h = dfs[files[3]][dfs[files[3]].iloc[:, 0] == gene].iloc[0]["log2FoldChange"]
-        if (abs(fold_change_AtCLV3p_5h) > abs(fold_change_AsterCLV3_5h) * 2 and abs(fold_change_AtCLV3p_5h) > abs(
-                fold_change_AtCLV3p_S5L_5h) * 2 and abs(fold_change_AsterCLV3_L5S_5h) > abs(
-                fold_change_AsterCLV3_5h) * 2 and abs(fold_change_AsterCLV3_L5S_5h) > abs(
-                fold_change_AtCLV3p_S5L_5h) * 2) or \
-                (abs(fold_change_AtCLV3p_5h) < abs(fold_change_AsterCLV3_5h) / 2 and abs(fold_change_AtCLV3p_5h) < abs(
-                    fold_change_AtCLV3p_S5L_5h) / 2 and abs(fold_change_AsterCLV3_L5S_5h) < abs(
-                    fold_change_AsterCLV3_5h) / 2 and abs(fold_change_AsterCLV3_L5S_5h) < abs(
-                    fold_change_AtCLV3p_S5L_5h) / 2):
+        if (abs(fold_change_AtCLV3p_5h) > abs(fold_change_AsterCLV3_5h) * 1.5 and abs(fold_change_AtCLV3p_5h) > abs(
+                fold_change_AtCLV3p_S5L_5h) * 1.5 and abs(fold_change_AsterCLV3_L5S_5h) > abs(
+                fold_change_AsterCLV3_5h) * 1.5 and abs(fold_change_AsterCLV3_L5S_5h) > abs(
+                fold_change_AtCLV3p_S5L_5h) * 1.5) or \
+                (abs(fold_change_AtCLV3p_5h) < abs(fold_change_AsterCLV3_5h) / 1.5 and abs(fold_change_AtCLV3p_5h) < abs(
+                    fold_change_AtCLV3p_S5L_5h) / 1.5 and abs(fold_change_AsterCLV3_L5S_5h) < abs(
+                    fold_change_AsterCLV3_5h) / 1.5 and abs(fold_change_AsterCLV3_L5S_5h) < abs(
+                    fold_change_AtCLV3p_S5L_5h) / 1.5):
             print("fold_change_AtCLV3p_5h:", fold_change_AtCLV3p_5h)
             print("fold_change_AsterCLV3_L5S_5h", fold_change_AsterCLV3_L5S_5h)
             print("vs")
