@@ -78,7 +78,9 @@ DEData_pairwise_cs_5h<-ImportCSVs('deseq_results/x5h/',0.05)
 DEData_pairwise_cs_24h<-ImportCSVs('deseq_results/x24h/',0.05)
 
 # Define the list of gene IDs
-gene_ids <- c("g51546.t1","g19104.t1")
+#gene_ids <- c("g51546.t1","g19104.t1", 'g9398.t1', 'g44552.t1', 'g51546.t1', 'g51709.t1', 'g19677.t1')
+
+gene_ids <- c("g51546.t1")
 
 # Loop over each gene ID
 for (gene_id in gene_ids) {
@@ -120,13 +122,66 @@ for (gene_id in gene_ids) {
   
   # Set factor levels (for axis ordering)
   logFC_data$ID <- factor(logFC_data$ID, levels = c("AtCLV3p_5h", "AtCLV3p_24h", "AtCLV3p_S5L_5h", "AtCLV3p_S5L_24h", "AsterCLV3_5h", "AsterCLV3_24h", "AsterCLV3_L5S_5h", "AsterCLV3_L5S_24h"))
+  write.csv(logFC_data, file = paste0("plots/",gene_id, '_logfold.csv'), row.names = FALSE)
   
-  # Plot the results
-  plot <- ggplot(result, aes(x = as.factor(dataset_id), y = mean_value)) +
-    geom_bar(stat = "identity", fill = "skyblue") +
-    labs(title = gene_id, x = "dataset_id", y = "Expression Counts (Raw)")
-  
+  # Plotting logFC data using ggplot
+  plot <- ggplot(logFC_data, aes(x = ID, y = log2FoldChange)) +
+    geom_bar(stat = "identity") +
+    labs(title = gene_id,
+         x = "Sample",
+         y = "logFC") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
   # Save the plot as PNG
-  ggsave(filename = paste0("plots/", gene_id, "_exp.png"), plot, width = 10, height = 7, units = "in")
+  ggsave(filename = paste0("plots/", gene_id, "_logfold.png"), plot, width = 10, height = 7, units = "in")
+  
+}
+
+
+# to do for just 5h and color by pvalue
+
+
+
+# Loop over each gene ID
+for (gene_id in gene_ids) {
+  # Bind rows from different datasets for the current gene
+  logFC_data <- bind_rows(
+    DEData_pairwise_cs_5h$result_AtCLV3p_5h %>%
+      filter_all(any_vars(. %in% gene_id)) %>%
+      select(log2FoldChange, padj) %>%
+      mutate(ID = "AtCLV3p_5h"),
+    DEData_pairwise_cs_5h$result_AtCLV3p_S5L_5h %>%
+      filter_all(any_vars(. %in% gene_id)) %>%
+      select(log2FoldChange, padj) %>%
+      mutate(ID = "AtCLV3p_S5L_5h"),
+    DEData_pairwise_cs_5h$result_AsterCLV3_5h %>%
+      filter_all(any_vars(. %in% gene_id)) %>%
+      select(log2FoldChange, padj) %>%
+      mutate(ID = "AsterCLV3_5h"),
+    DEData_pairwise_cs_5h$result_AsterCLV3_L5S_5h %>%
+      filter_all(any_vars(. %in% gene_id)) %>%
+      select(log2FoldChange, padj) %>%
+      mutate(ID = "AsterCLV3_L5S_5h")
+  )
+  
+  # Set factor levels (for axis ordering)
+  logFC_data$ID <- factor(logFC_data$ID, levels = c("AtCLV3p_5h", "AsterCLV3_L5S_5h", "AtCLV3p_S5L_5h", "AsterCLV3_5h"))
+  
+  logFC_data <- logFC_data %>%
+    mutate(p_val = ifelse(padj < 0.05, "p<0.05", "p>=0.05"))
+  
+  # Plotting logFC data using ggplot
+  plot <- ggplot(logFC_data, aes(x = ID, y = log2FoldChange, fill=p_val)) +
+    geom_bar(stat = "identity", width=0.75) +scale_fill_manual(values = c("p<0.05" = "blue", "p>=0.05" = "gray"), 
+                                                               labels = c("p<0.05", "p>=0.05")) +
+    labs(title = gene_id,
+         x = "Treatment",
+         y = "logFC") +
+    theme_minimal() +  # Use minimal theme for white background
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.background = element_rect(fill = "white", color = "black"),  # White background with black border
+          panel.grid.major = element_blank(),  # Remove major gridlines
+          panel.grid.minor = element_blank())  # Remove minor gridlines
+  # Save the plot as PNG
+  ggsave(filename = paste0("plots/", gene_id, "_logfold_5h.png"), plot, width = 10, height = 7, units = "in")
   
 }
