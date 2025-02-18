@@ -30,6 +30,16 @@ adjusted_counts_deseq<-DESeqDataSetFromMatrix((adjusted_counts),colData = metada
 # run the DGE analysis
 DESeq_dataset_results_combatseq<-DESeq(adjusted_counts_deseq,parallel=TRUE)
 
+
+normalized_counts<-counts(DESeq_dataset_results_combatseq, normalized=TRUE)
+write.csv(normalized_counts, "deseq_results/CLE_normalized_counts_size_factor.csv")
+
+
+# transform data into a matrix
+vsd <- vst(DESeq_dataset_results_combatseq,blind=FALSE)
+vsd_matrix<-assay(vsd)
+write.csv(vsd_matrix, "deseq_results/CLE_normalized_counts_vst.csv")
+
 # save this because it will be read in to WGCNA (WGCNA takes all genes into account, but uses the normalization of DESeq)
 saveRDS(DESeq_dataset_results_combatseq, file='deseq_results/deseq_dataset_results_combatseq.RData')
 

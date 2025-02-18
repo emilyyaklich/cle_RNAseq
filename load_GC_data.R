@@ -25,6 +25,6 @@ data_table<-data.frame(sampleName=shortened_names,fileName=gene_count_files)
 dds_set<-DESeqDataSetFromHTSeqCount(sampleTable=data_table,directory='/scratch/ely67071/sunflower_cle_data/gene_count_data/',design=~0)
 
 # save the data set 
-saveRDS(dds_set,file="/home/ely67071/cle_RNAseq/gene_count_sunflower_cle_deseq.Rdata")
+saveRDS(dds_set,file="/home/ely67071/cle_RNAseq/analysis/gene_count_sunflower_cle_deseq.Rdata")
 
 
