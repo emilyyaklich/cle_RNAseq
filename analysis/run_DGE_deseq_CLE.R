@@ -3,7 +3,7 @@
 # Date: 08/29/2023
 # Version:4.2.1
 # Description: Will run the differential gene expression on the infloresence stages accounting for variation with combatseq
-
+?hclust()
 
 setwd('/home/ely67071/cle_RNAseq/analysis')
 

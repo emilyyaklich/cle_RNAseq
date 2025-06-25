@@ -38,6 +38,8 @@ summed_counts_filt<-summed_counts[keep,]
 
 # get a dataframe of the counts
 count_matrix <- as.matrix(counts(summed_counts_filt))
+write.csv(as.data.frame((count_matrix)), file='raw_cle_counts.csv')
+
 
 reordered <- as.numeric(gsub("CLE", "", metadata$cle_id))
 
