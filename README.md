@@ -1,4 +1,4 @@
-# dev_RNAseq
+# cle_RNAseq
 A pipeline for analyzing expression across developmental stages. 
 Built from Emily Dittmar's sunflower expression pipeline: https://github.com/EDitt/Sunflower_RNAseq
 
@@ -8,7 +8,6 @@ Built from Emily Dittmar's sunflower expression pipeline: https://github.com/EDi
 ## Programs Used:  
 FASTQC: https://dnacore.missouri.edu/PDF/FastQC_Manual.pdf  
 MultiQC: https://multiqc.info/  
-Trimmomatic: http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf  
 STAR: http://chagall.med.cornell.edu/RNASEQcourse/STARmanual.pdf  
 
 To run `dev_RNAseq`, use the following command, assuming you are in the `dev_RNAseq` directory:  
